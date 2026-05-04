@@ -1,0 +1,27 @@
+name: Run Fulfillment Analysis
+
+on:
+  push:
+    paths:
+      - 'data/retail_orders.csv'
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run analysis
+        run: python3 generate_dashboard.py
+
+      - name: Upload dashboard artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fulfillment-dashboard
+          path: dashboard/index.html
